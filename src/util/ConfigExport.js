@@ -16,7 +16,7 @@ export const ValueType = {
         {
           title: '分栏布局',
           name: 'SpanLayout',
-          icon: 'reorder-three-outline',
+          icon: 'ReorderThreeOutline',
           value: [],
           valueType: ValueType.array,
           props: {
@@ -30,9 +30,13 @@ export const ValueType = {
         {
           title: '单行文本输入',
           name: 'TextInput',
-          icon: 'create-outline',
-          value: '',
-          valueType: ValueType.string,
+          icon: 'CreateOutline',
+          value: {
+              value:'',
+              placeholder:'请设置提示语',
+              size: 'small'
+          },
+          valueType: ValueType.object,
           props: {
             required: false,
             enablePrint: true
@@ -41,7 +45,7 @@ export const ValueType = {
         {
           title: '多行文本输入',
           name: 'TextareaInput',
-          icon: 'ellipsis-horizontal',
+          icon: 'EllipsisHorizontal',
           value: '',
           valueType: ValueType.string,
           props: {
@@ -52,7 +56,7 @@ export const ValueType = {
         {
           title: '数字输入框',
           name: 'NumberInput',
-          icon: 'pencil-sharp',
+          icon: 'PencilSharp',
           value: '',
           valueType: ValueType.number,
           props: {
@@ -63,7 +67,7 @@ export const ValueType = {
         {
           title: '金额输入框',
           name: 'AmountInput',
-          icon: 'wallet-outline',
+          icon: 'WalletOutline',
           value: '',
           valueType: ValueType.number,
           props: {
@@ -75,7 +79,7 @@ export const ValueType = {
         {
           title: '单选框',
           name: 'SelectInput',
-          icon: 'checkmark-circle-outline',
+          icon: 'CheckmarkCircleOutline',
           value: '',
           valueType: ValueType.string,
           props: {
@@ -88,7 +92,7 @@ export const ValueType = {
         {
           title: '多选框',
           name: 'MultipleSelect',
-          icon: 'checkbox-outline',
+          icon: 'CheckboxOutline',
           value: [],
           valueType: ValueType.array,
           props: {
@@ -101,7 +105,7 @@ export const ValueType = {
         {
           title: '日期时间点',
           name: 'DateTime',
-          icon: 'calendar-number-outline',
+          icon: 'CalendarNumberOutline',
           value: '',
           valueType: ValueType.date,
           props: {
@@ -113,7 +117,7 @@ export const ValueType = {
         {
           title: '日期时间区间',
           name: 'DateTimeRange',
-          icon: 'calendar-outline',
+          icon: 'CalendarOutline',
           valueType: ValueType.dateRange,
           props: {
             required: false,
@@ -126,7 +130,7 @@ export const ValueType = {
         {
           title: '上传图片',
           name: 'ImageUpload',
-          icon: 'image-outline',
+          icon: 'ImageOutline',
           value: [],
           valueType: ValueType.array,
           props: {
@@ -140,7 +144,7 @@ export const ValueType = {
         {
           title: '上传附件',
           name: 'FileUpload',
-          icon: 'cloud-upload-outline',
+          icon: 'CloudUploadOutline',
           value: [],
           valueType: ValueType.array,
           props: {
@@ -155,7 +159,7 @@ export const ValueType = {
         {
           title: '人员选择',
           name: 'UserPicker',
-          icon: 'person-outline',
+          icon: 'PersonOutline',
           value: [],
           valueType: ValueType.user,
           props: {
@@ -167,7 +171,7 @@ export const ValueType = {
         {
           title: '部门选择',
           name: 'DeptPicker',
-          icon: 'person-add-outline',
+          icon: 'PersonAddOutline',
           value: [],
           valueType: ValueType.dept,
           props: {
@@ -179,7 +183,7 @@ export const ValueType = {
         {
           title: '说明文字',
           name: 'Description',
-          icon: 'alert-circle-outline',
+          icon: 'AlertCircleOutline',
           value: '',
           valueType: ValueType.string,
           props: {
@@ -189,12 +193,35 @@ export const ValueType = {
         },
       ]
     }, {
+      name: '扩展-输入框',
+      components: [
+        {
+          title: '前缀输入框',
+          name: 'TextInputFix',
+          icon: 'CreateOutline',
+          value: {},
+          valueType: ValueType.object,
+          props: {
+            value:'',
+            placeholder:'请设置提示语',
+            size: 'small',
+            prefix: 'ICON',
+            prefixValue: '',
+            prefixDescript:'',
+            suffix: 'ICON',
+            suffixValue: '',
+            suffixDescript:''
+          }
+        }
+      ]
+    },
+    {
       name: '扩展组件',
       components: [
         {
           title: '明细表',
           name: 'TableList',
-          icon: 'document-text-outline',
+          icon: 'DocumentTextOutline',
           value: [],
           valueType: ValueType.array,
           props: {

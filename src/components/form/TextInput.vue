@@ -1,36 +1,48 @@
 <script setup>
 import {ref,defineEmits,computed } from 'vue'
+import { TextInputType } from '@/util/ConfigEnum'
 
 const props = defineProps({
     mode: { type: String,default: 'DESIGN' },
-    modelValue: { type:String,default: null },
-    placeholder: { type: String, default: '请输入内容' },
+    modelValue: { 
+        type:Object,
+        default: ()=>{
+            return {
+              value:'',
+              placeholder:'',
+              size: ''
+            };
+        }  
+    },
     required: { type: Boolean,default: false }
 })
 
 const emit = defineEmits(["update:modelValue"])
-const value = computed({
-  get: () => props.modelValue,
-  set: (_value) => emit("update:modelValue", _value),
+const _value = computed({
+  get: () => props.modelValue.value,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{value:__value});
+    emit("update:modelValue", temp);
+  }
 })
-
+const placeholder = computed(()=>{
+    return props.modelValue.placeholder;
+})
 </script>
 <template>
     <div>
-      <div v-if="mode === 'DESIGN'">
-        <a-input size="medium" 
-            v-model:value="value" 
-            disabled :placeholder="placeholder"/>
-      </div>
-      <div v-else>
-        <a-input size="medium" allow-clear 
-           v-model:value="value" 
-          :placeholder="placeholder"/>
-      </div>
+      <a-input 
+          class="fwidth"
+          size="medium" 
+          v-model:value="_value" 
+          :placeholder="placeholder">
+      </a-input>
     </div>
 </template>
   
 <style scoped>
-  
+  .fwidth{
+  width:100%;
+}
 </style>
   

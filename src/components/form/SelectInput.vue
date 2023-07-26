@@ -30,18 +30,22 @@ const value = computed({
 <template>
   <div>
     <div v-if="mode === 'DESIGN'">
-      <a-select class="max-fill" v-if="!expanding" size="medium" 
-                v-model:value="value" disabled :placeholder="placeholder"/>
-      <a-radio-group v-model="value" v-else>
-        <a-radio disabled v-for="(op, index) in options" 
-              :key="index" :value="op">{{op}}</a-radio>
-      </a-radio-group>
+        <a-select class="max-fill" 
+                v-if="!expanding" 
+                size="medium" 
+                v-model:value="value" 
+                disabled 
+                :placeholder="placeholder">
+          <a-select-option v-for="(op, index) in options" 
+            :key="index" 
+            :value="op" 
+            :label="op"></a-select-option>
+      </a-select>
     </div>
     <div v-else>
       <a-select class="max-fill" v-if="!expanding" v-model:value="value" 
               size="medium" allow-clear :placeholder="placeholder">
-        <a-select-option 
-                v-for="(op, index) in options" 
+        <a-select-option v-for="(op, index) in options" 
                 :key="index" 
                 :value="op" :label="op"></a-select-option>
       </a-select>

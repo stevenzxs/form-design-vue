@@ -11,12 +11,9 @@ import ConfigRender  from "@/components/design/ConfigRender.vue";
 
 const store = globalStore()
 let { 
-  hello,
   formItems,
   selectFormItem 
 } = storeToRefs( store );
-
-// console.log( hello,formItems );
 
 const tempdata = {
     formId: "0d12c7aba4854e35bf803c4d1a5bbf51",
@@ -186,25 +183,25 @@ watch(selectFormItem, (newValue, oldValue) => {
           <div>
             
             <a-tooltip color="dark" title="撤销" placement="bottom">
-              <IconNode icon-name="arrow-undo-outline" />
+              <IconNode icon-name="ArrowUndoOutline" />
             </a-tooltip>
 
             <a-tooltip class="item" color="dark" title="恢复" placement="bottom">
-              <IconNode icon-name="arrow-redo-outline" />
+              <IconNode icon-name="ArrowRedoOutline" />
             </a-tooltip>
           </div>
           <div>
 
             <a-tooltip class="item" color="dark" title="预览表单" placement="bottom">
-              <IconNode icon-name="eye-outline" @click="viewformItems" />
+              <IconNode icon-name="EyeOutline" @click="viewformItems" />
             </a-tooltip>
 
             <a-tooltip class="item" color="dark" title="移动端" placement="bottom">
-              <IconNode icon-name="phone-portrait-outline" @click="showMobile = true" />
+              <IconNode icon-name="PhonePortraitOutline" @click="showMobile = true" />
             </a-tooltip>
 
             <a-tooltip class="item" color="dark" title="PC端" placement="bottom">
-              <IconNode icon-name="desktop-outline" @click="showMobile = false" />
+              <IconNode icon-name="DesktopOutline" @click="showMobile = false" />
             </a-tooltip>
 
           </div>
@@ -237,20 +234,15 @@ watch(selectFormItem, (newValue, oldValue) => {
           </div>
         </div>
       </div>
-
+      
       </a-layout-content>
     </a-layout>
 
   <a-layout-sider width="300" class="right-side">
-    <div class="tool-nav-r" 
-              v-if="selectFormItem.name">
-      <IconNode :icon-name="selectFormItem.icon"  />
-      <span>{{ selectFormItem.title }}</span>
-    </div>
     <div v-if="!selectFormItem || formItems.length === 0" class="tip">
       😀 选中控件后在这里进行编辑
     </div>
-    <div style="text-align:left; padding: 10px" v-else>
+    <div v-else>
       <ConfigRender />
     </div>
   </a-layout-sider>
@@ -485,8 +477,12 @@ watch(selectFormItem, (newValue, oldValue) => {
 
 }
 
-.right-side{
+:deep(.right-side){
   border-left: 1px solid #ebecee;
+  .ant-layout-sider-children{
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
 }
 
 .tool-nav-r {
