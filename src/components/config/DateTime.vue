@@ -9,7 +9,7 @@ const props = defineProps({
               value:'',
               placeholder:'',
               size: '',
-              format:''
+              format: ''
             };
         }  
     }
@@ -31,16 +31,29 @@ const _placeholder = computed(()=>{
     emit("update:modelValue", temp);
   }
 })
-
 const _format = computed(()=>{
-  return props.modelValue.format;
+  get: () => props.modelValue.format
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{format:__value});
+    emit("update:modelValue", temp);
+  }
 })
 </script>
 <template>
   <div>
-    <a-range-picker v-model:value="_value" :placeholder="_placeholder" />
+    <a-form-item label="提示文字">
+      <a-input size="small" v-model:value="_placeholder" placeholder="请设置日期提示"/>
+    </a-form-item>
+    <a-form-item label="日期格式">
+      <a-select size="small" v-model:value="_format">
+        <a-select-option value="yyyy" label="yyyy"></a-select-option>
+        <a-select-option value="yyyy-MM" label="yyyy-MM"></a-select-option>
+        <a-select-option value="yyyy-MM-dd" label="年-月-日"></a-select-option>
+        <a-select-option value="yyyy-MM-dd HH:mm" label="年-月-日 时:分"></a-select-option>
+      </a-select>
+    </a-form-item>
   </div>
 </template>
-<style scoped>
+<style scoped lang="less">
 
 </style>

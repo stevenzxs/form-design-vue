@@ -1,123 +1,118 @@
+<script setup>
+import {ref,defineEmits,computed } from 'vue'
+
+const props = defineProps({
+    modelValue: { 
+        type:Object,
+        default: ()=>{
+            return {
+              value:'',
+              placeholder:'',
+              size: '',
+              format:''
+            };
+        }  
+    }
+})
+
+const emit = defineEmits(["update:modelValue"])
+const _value = computed({
+  get: () => props.modelValue.value,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{value:__value});
+    emit("update:modelValue", temp);
+  }
+})
+
+const _placeholder = computed(()=>{
+  get: () => props.modelValue.placeholder
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{placeholder:__value});
+    emit("update:modelValue", temp);
+  }
+})
+
+const _format = computed(()=>{
+  return props.modelValue.format;
+})
+
+const previewVisible = ref(false);
+const previewImage = ref('');
+const previewTitle = ref('');
+
+const fileList = ref([
+  {
+    uid: '-1',
+    name: 'image.png',
+    status: 'done',
+    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-2',
+    name: 'image.png',
+    status: 'done',
+    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-3',
+    name: 'image.png',
+    status: 'done',
+    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-4',
+    name: 'image.png',
+    status: 'done',
+    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-xxx',
+    percent: 50,
+    name: 'image.png',
+    status: 'uploading',
+    url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+  },
+  {
+    uid: '-5',
+    name: 'image.png',
+    status: 'error',
+  },
+]);
+
+const handleCancel = () => {
+  previewVisible.value = false;
+  previewTitle.value = '';
+};
+const handlePreview = async (file) => {
+  if (!file.url && !file.preview) {
+    file.preview = await getBase64(file.originFileObj);
+  }
+  previewImage.value = file.url || file.preview;
+  previewVisible.value = true;
+  previewTitle.value = file.name || file.url.substring(file.url.lastIndexOf('/') + 1);
+};
+
+</script>
 <template>
   <div>
-    <div v-if="mode === 'DESIGN'">
-      <div class="design">
-        <i class="el-icon-plus"></i>
+    <a-upload
+      v-model:file-list="fileList"
+      action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      list-type="picture-card"
+      @preview="handlePreview"
+    >
+      <div v-if="fileList.length < 8">
+        <plus-outlined />
+        <div style="margin-top: 8px">Upload</div>
       </div>
-      <p>{{ placeholder }} {{ sizeTip }}</p>
-    </div>
-    <div v-else>
-      <el-upload :file-list="_value" action="#" :limit="maxSize" with-credentials :multiple="maxSize > 0" :data="uploadParams"
-                 list-type="picture-card" :auto-upload="false" :before-upload="beforeUpload">
-        <i slot="default" class="el-icon-plus"></i>
-        <div slot="file" slot-scope="{file}">
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
-          <span class="el-upload-list__item-actions">
-            <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-              <i class="el-icon-zoom-in"></i>
-            </span>
-            <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleDownload(file)">
-              <i class="el-icon-download"></i>
-            </span>
-            <span v-if="!disabled" class="el-upload-list__item-delete" @click="handleRemove(file)">
-              <i class="el-icon-delete"></i>
-            </span>
-          </span>
-        </div>
-        <div slot="tip" class="el-upload__tip">{{ placeholder }} {{ sizeTip }}</div>
-      </el-upload>
-    </div>
+    </a-upload>
+    <a-modal :visible="previewVisible" :title="previewTitle" 
+          :footer="null" @cancel="handleCancel">
+      <img alt="example" style="width: 100%" :src="previewImage" />
+    </a-modal>
   </div>
 </template>
 
-<script>
-import componentMinxins from '../ComponentMinxins'
-
-export default {
-  mixins: [componentMinxins],
-  name: "ImageUpload",
-  components: {},
-  props: {
-    value:{
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
-    placeholder: {
-      type: String,
-      default: '请选择图片'
-    },
-    maxSize: {
-      type: Number,
-      default: 5
-    },
-    maxNumber:{
-      type: Number,
-      default: 10
-    },
-    enableZip: {
-      type: Boolean,
-      default: true
-    }
-  },
-  computed: {
-    sizeTip() {
-      return this.maxSize > 0 ? `| 每张图不超过${this.maxSize}MB` : ''
-    }
-  },
-  data() {
-    return {
-      disabled: false,
-      uploadParams: {}
-    }
-  },
-  methods: {
-    beforeUpload(file){
-      const alows = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
-      if (alows.indexOf(file.type) === -1){
-        this.$message.warning("存在不支持的图片格式")
-      }else if(this.maxSize > 0 && file.size / 1024 / 1024 > this.maxSize){
-        this.$message.warning(`单张图片最大不超过 ${this.maxSize}MB`)
-      }else {
-        return true
-      }
-      return false
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePictureCardPreview(file) {
-      console.log(file)
-    },
-    handleDownload(file) {
-      console.log(file);
-    }
-  }
-}
-</script>
-
 <style lang="less" scoped>
-.design {
-  i {
-    padding: 10px;
-    font-size: xx-large;
-    background: white;
-    border: 1px dashed #8c8c8c;
-  }
-}
-/deep/ .el-upload--picture-card{
-  width: 80px;
-  height: 80px;
-  line-height: 87px;
-}
-/deep/ .el-upload-list__item{
-  width: 80px;
-  height: 80px;
-  .el-upload-list__item-actions{
-    &> span+span{
-      margin: 1px;
-    }
-  }
-}
+
 </style>

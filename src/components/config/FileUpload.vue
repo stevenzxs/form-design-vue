@@ -9,7 +9,7 @@ const props = defineProps({
               value:'',
               placeholder:'',
               size: '',
-              options:[]
+              format:''
             };
         }  
     }
@@ -24,34 +24,22 @@ const _value = computed({
   }
 })
 
-const _options = computed({
-  get: () => props.modelValue.options,
+const _placeholder = computed(()=>{
+  get: () => props.modelValue.placeholder
   set: (__value) => {
-    let temp = Object.assign(props.modelValue,{options:__value});
+    let temp = Object.assign(props.modelValue,{placeholder:__value});
     emit("update:modelValue", temp);
   }
 })
-const _placeholder = computed(()=>{
-  return props.modelValue.placeholder;
-})
 </script>
 <template>
-<div>
-  <a-select class="fwidth" 
-            size="small" 
-            v-model:value="_value" 
-            :placeholder="_placeholder">
-      <a-select-option 
-          v-for="(op, index) in _options" 
-          :key="index" 
-          :value="op.label" 
-          :label="op.label">
-      </a-select-option>
-  </a-select>
-</div>
+  <div>
+    <a-form-item label="提示文字">
+      <a-input size="small" v-model:value="_placeholder" placeholder="请设置提示语"/>
+    </a-form-item>
+  </div>
 </template>
-<style scoped>
-  .fwidth{
-  width:100%;
-}
+
+<style lang="less" scoped>
+
 </style>

@@ -92,14 +92,12 @@ export const ValueType = {
             value: '',
             options: [
               {
-                "name": "Joao",
-                "text": "joao",
-                "id": 1
+                label: "joao",
+                id: 1
               },
               {
-                "name": "xiao",
-                "text": "xiao",
-                "id": 2
+                label: "xiao",
+                id: 2
               }
             ]
           },
@@ -112,25 +110,36 @@ export const ValueType = {
           title: '多选框',
           name: 'MultipleSelect',
           icon: 'CheckboxOutline',
-          value: [],
-          valueType: ValueType.array,
+          value: {
+            value: '',
+            options: [
+              {
+                label: "joao",
+                id: 1
+              },
+              {
+                label: "xiao",
+                id: 2
+              }
+            ]
+          },
+          valueType: ValueType.object,
           props: {
-            required: false,
-            enablePrint: true,
-            expanding: false,
-            options: ['选项1', '选项2']
+            
           }
         },
         {
           title: '日期时间点',
           name: 'DateTime',
           icon: 'CalendarNumberOutline',
-          value: '',
-          valueType: ValueType.date,
+          value: {
+              value:'',
+              placeholder:'',
+              size: '',
+              format:''
+          },
+          valueType: ValueType.object,
           props: {
-            required: false,
-            enablePrint: true,
-            format: 'yyyy-MM-dd HH:mm',
           }
         },
         {

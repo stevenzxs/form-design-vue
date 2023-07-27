@@ -1,52 +1,53 @@
+<script setup>
+import {ref,defineEmits,computed } from 'vue'
+
+const props = defineProps({
+    modelValue: { 
+        type:Object,
+        default: ()=>{
+            return {
+              value:'',
+              placeholder:'',
+              size: '',
+              format:''
+            };
+        }  
+    }
+})
+
+const emit = defineEmits(["update:modelValue"])
+const _value = computed({
+  get: () => props.modelValue.value,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{value:__value});
+    emit("update:modelValue", temp);
+  }
+})
+
+const _placeholder = computed(()=>{
+  get: () => props.modelValue.placeholder
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{placeholder:__value});
+    emit("update:modelValue", temp);
+  }
+})
+
+const _format = computed(()=>{
+  return props.modelValue.format;
+})
+</script>
 <template>
   <div>
-    <div v-if="mode === 'DESIGN'" >
-      <el-date-picker size="medium" disabled :type="type" :placeholder="placeholder"></el-date-picker>
-    </div>
-    <div v-else>
-      <el-date-picker v-model="_value" :value-format="format" size="medium" clearable :type="type" :placeholder="placeholder"></el-date-picker>
-    </div>
+      <a-date-picker 
+          class="fwidth"
+          size="small" 
+          v-model:value="_value" 
+          :format="_format" 
+          :placeholder="_placeholder" />
   </div>
 </template>
-
-<script>
-import componentMinxins from '../ComponentMinxins'
-
-export default {
-  mixins: [componentMinxins],
-  name: "DateTime",
-  components: {},
-  props:{
-    value: {
-      default: null
-    },
-    format:{
-      type: String,
-      default: 'yyyy-MM-dd HH:mm'
-    },
-    placeholder:{
-      type: String,
-      default: '请选择日期时间'
-    }
-  },
-  computed:{
-    type(){
-      switch (this.format){
-        case 'yyyy': return 'year';
-        case 'yyyy-MM': return 'month';
-        case 'yyyy-MM-dd': return 'date';
-        case 'yyyy-MM-dd HH:mm': return 'datetime';
-        default: return 'datetime';
-      }
-    }
-  },
-  data() {
-    return {}
-  },
-  methods: {}
-}
-</script>
-
 <style scoped>
-
+.fwidth{
+  width:100%;
+}
 </style>

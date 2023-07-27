@@ -23,24 +23,16 @@ const _value = computed({
     emit("update:modelValue", temp);
   }
 })
-
-const _placeholder = computed(()=>{
-  get: () => props.modelValue.placeholder
-  set: (__value) => {
-    let temp = Object.assign(props.modelValue,{placeholder:__value});
-    emit("update:modelValue", temp);
-  }
-})
-
-const _format = computed(()=>{
-  return props.modelValue.format;
-})
 </script>
+
 <template>
   <div>
-    <a-range-picker v-model:value="_value" :placeholder="_placeholder" />
+    <a-form-item label="提示文字">
+      <a-input size="small" v-model:value="_placeholder" placeholder="请设置提示语"/>
+    </a-form-item>
   </div>
 </template>
-<style scoped>
+
+<style lang="less" scoped>
 
 </style>

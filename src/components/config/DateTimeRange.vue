@@ -9,7 +9,7 @@ const props = defineProps({
               value:'',
               placeholder:'',
               size: '',
-              options:[]
+              format:''
             };
         }  
     }
@@ -24,37 +24,45 @@ const _value = computed({
   }
 })
 
-const _options = computed({
-  get: () => props.modelValue.options,
+const _placeholder = computed(()=>{
+  get: () => props.modelValue.placeholder
   set: (__value) => {
-    let temp = Object.assign(props.modelValue,{options:__value});
+    let temp = Object.assign(props.modelValue,{placeholder:__value});
     emit("update:modelValue", temp);
   }
 })
-const _placeholder = computed(()=>{
-  return props.modelValue.placeholder;
-})
 
+const _format = computed(()=>{
+  return props.modelValue.format;
+})
 </script>
 <template>
   <div>
-      <a-select
-          class="fwidth" 
-          size="small" 
-          mode = "multiple" 
-         v-model:value="_value"  
-         :placeholder="_placeholder">
-       <a-select-option 
-          v-for="(op, index) in _options" 
-          :key="index" 
-          :value="op.label" 
-          :label="op.label">
-      </a-select-option>
-    </a-select>
+    <a-form-item label="提示文字">
+      <a-input size="small" v-model:value="_placeholder" placeholder="开始日期提示"/>
+    </a-form-item>
   </div>
 </template>
-<style scoped>
- .fwidth{
-  width:100%;
+
+<script>
+export default {
+  name: "DateTimeRangeConfig",
+  components: {},
+  props: {
+    value: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {}
+  },
+  methods: {}
 }
+</script>
+
+<style scoped>
+
 </style>
