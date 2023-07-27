@@ -2,24 +2,26 @@
 import {ref,defineEmits,computed } from 'vue'
 
 const props = defineProps({
-    mode: { type: String,default: 'DESIGN' },
-    modelValue: { type:String,default: null },
-    placeholder: { type: String, default: '请输入内容' },
-    required: { type: Boolean,default: false },
-    showChinese: {
-      type: Boolean,
-      default: true
-    },
-    precision: {
-      type: Number,
-      default: 0
+    modelValue: { 
+        type:Object,
+        default: ()=>{
+            return {
+              value:'',
+              defaultValue:0,
+              size: '',
+              showChinese:''
+            };
+        }  
     }
 })
 
 const emit = defineEmits(["update:modelValue"])
-const value = computed({
-  get: () => props.modelValue,
-  set: (_value) => emit("update:modelValue", _value),
+const _value = computed({
+  get: () => props.modelValue.value,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{value:__value});
+    emit("update:modelValue", temp);
+  }
 })
 
 const convertCurrency = (money)=>{
@@ -109,40 +111,22 @@ const convertCurrency = (money)=>{
       }
       return chineseStr;
 }
-
 const chinese = computed(()=>{
-  return convertCurrency(value)
+  return convertCurrency(_value)
 })
 
 </script>
 <template>
   <div>
-    <div v-if="mode === 'DESIGN'">
-      <a-input-number size="medium" 
+      <a-input-number size="small" 
           style="width: 100%;" 
-          v-model:value="value"
-          :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-          :parser="value => value.replace(/\$\s?|(,*)/g, '')"
-          disabled />
+          v-model:value="_value"
+          :formatter="_value => `$ ${_value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+          :parser="_value => _value.replace(/\$\s?|(,*)/g, '')" />
       <div style="margin-top: 15px" v-show="showChinese">
         <span>大写：</span>
         <span class="chinese">{{chinese}}</span>
       </div>
-    </div>
-    <div v-else>
-      <a-input-number 
-          style="width: 100%;" 
-          :min="0" 
-          :precision="precision" 
-          :formatter="value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
-          :parser="value => value.replace(/\$\s?|(,*)/g, '')"
-          size="medium" 
-          v-model:value="value" />
-      <div v-show="showChinese">
-        <span>大写：</span>
-        <span class="chinese">{{chinese}}</span>
-      </div>
-    </div>
   </div>
 </template>
 <style lang="less" scoped>

@@ -18,16 +18,16 @@ const configData = ref([
 <template>
   <a-list size="small"  :data-source="configData">
     <template #renderItem="{ item,index }">
-      <a-list-item>
+      <a-list-item class="c-list">
         <div v-if="item.name == 'API' ">
           <div v-if="selectFormItem.name">
             <a-form style="width:100%"
-              label-width="120px"  
               layout="horizontal"
-              :label-col="{ span: 6 }" 
-              :wrapper-col="{ span: 14 }"
+              :label-col="{ style: { width: '80px' } }" 
+              :wrapper-col="{ style: { width: '100%' } }"
               v-if="selectFormItem.name !== 'SpanLayout'">
-              <component :is="$componentsConfig[selectFormItem.name]" 
+              <component style="width:280px"
+                  :is="$componentsConfig[selectFormItem.name]" 
                   v-model="selectFormItem.value" />
             </a-form>
             <a-empty v-else description="当前组件不支持API配置"></a-empty>
@@ -62,6 +62,9 @@ const configData = ref([
 }
 :deep(.ant-form-item){
   margin-bottom: 0px;
+}
+.c-list{
+  padding: 8px 8px !important;
 }
 </style>
   

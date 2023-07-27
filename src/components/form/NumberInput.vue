@@ -2,33 +2,38 @@
 import {ref,defineEmits,computed } from 'vue'
 
 const props = defineProps({
-    mode: { type: String,default: 'DESIGN' },
-    modelValue: { type:String,default: null },
-    placeholder: { type: String, default: '请输入内容' },
-    required: { type: Boolean,default: false }
+    modelValue: { 
+        type:Object,
+        default: ()=>{
+            return {
+              value:'',
+              defaultValue:0,
+              size: ''
+            };
+        }  
+    }
 })
 
 const emit = defineEmits(["update:modelValue"])
-const value = computed({
-  get: () => props.modelValue,
-  set: (_value) => emit("update:modelValue", _value),
+const _value = computed({
+  get: () => props.modelValue.value,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{value:__value});
+    emit("update:modelValue", temp);
+  }
 })
+const _defaultValue = computed(()=>{
+    return props.modelValue.defaultValue;
+})
+
 </script>
 <template>
   <div>
-    <div v-if="mode === 'DESIGN'">
       <a-input-number 
-           size="medium" disabled 
+           size="small" 
            style="width: 100%"
-           v-model:value="value" />
-    </div>
-    <div v-else>
-      <a-input-number 
-          v-model:value="value" 
-          size="medium" 
-          style="width: 100%"
-          allow-clear />
-    </div>
+           v-model:value="_value" 
+           :default-value = "_defaultValue" />
   </div>
 </template>
 <style scoped>

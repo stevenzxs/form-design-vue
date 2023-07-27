@@ -1,15 +1,37 @@
 <script setup>
 import {ref,defineEmits,computed,h} from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue';
 import draggable from "vuedraggable";
+import IconNode from '@/components/util/IconNode.vue'
+import {getId} from '@/util/tool'
+
 const props = defineProps({
-    modelValue: { type:String,default: null }
+    modelValue: { 
+        type:Object,
+        default: ()=>{
+            return {
+              value:'',
+              size: '',
+              options:[]
+            };
+        }  
+    }
 })
 
 const emit = defineEmits(["update:modelValue"])
-const value = computed({
-  get: () => props.modelValue,
-  set: (_value) => emit("update:modelValue", _value),
+const _value = computed({
+  get: () => props.modelValue.value,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{value:__value});
+    emit("update:modelValue", temp);
+  }
+})
+
+const _options = computed({
+  get: () => props.modelValue.options,
+  set: (__value) => {
+    let temp = Object.assign(props.modelValue,{options:__value});
+    emit("update:modelValue", temp);
+  }
 })
 
 const dragOption = ref({
@@ -17,37 +39,51 @@ const dragOption = ref({
   sort: true
 });
 
+const addOption = ()=>{
+  _options.value.push({
+    label: '',
+    id: getId()
+  })
+}
 </script>
 <template>
   <div>
-    <a-form-item label="提示文字">
-      <a-input size="small" v-model:value="value" placeholder="请设置提示语"/>
-    </a-form-item>
-    <a-form label-position="top">
-      <a-form-item label="选项设置" class="options">
-        <div slot="label" class="option-item-label">
-          <span>选项设置</span>
-          <a-button  :icon="h(PlusOutlined)"
-                    type="text" size="mini"
-                     @click="value.options.push('新选项')">新增选项</a-button>
-        </div>
-        <draggable :list="value.options" group="option" handler=".el-icon-rank" :options="dragOption">
-          <template #item="{element:header}">
+    <a-form-item label="选项设置">
+          <a-button style="float:right"
+              type="text" size="mini" @click="addOption">
+              <template #icon>
+                <IconNode icon-name="Add"/>
+              </template>
+              新增选项
+          </a-button>
+      </a-form-item>  
+      <a-form-item class="options" label="">
+        <draggable :list="_options" group="option" handler=".handle" :animation="350">
+          <template #item="{element,index}">
             <div class="option-item">
-              <i class="el-icon-rank"></i>
-              <a-input v-model="element" size="medium" placeholder="请设置选项值" clearable>
-                <a-button icon="el-icon-delete" slot="append" type="danger" size="medium"
-                          @click="value.options.splice(header, 1)"></a-button>
+              <a-input class="fwidth"
+                v-model:value="element.label" size="small" placeholder="请设置选项值" >
+                <template #addonBefore>
+                    <IconNode icon-name="ListOutline" class="h-icon" />
+                </template>
+                <template #addonAfter>
+                    <IconNode icon-name="Close" @click="_options.splice(index, 1)"/>
+                </template>
               </a-input>
             </div>
           </template>
         </draggable>
       </a-form-item>
-    </a-form>
-    <a-form-item label="选项展开">
-      <a-switch v-model:checked="value.expanding"></a-switch>
-    </a-form-item>
   </div>
 </template>
 <style lang="less" scoped>
+.option-item{
+  display:flex;
+  justify-content: space-between;
+  padding:5px;
+  width:100%;
+}
+.fwidth{
+  width:100%;
+}
 </style>

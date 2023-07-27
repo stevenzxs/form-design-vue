@@ -46,8 +46,12 @@ export const ValueType = {
           title: '多行文本输入',
           name: 'TextareaInput',
           icon: 'EllipsisHorizontal',
-          value: '',
-          valueType: ValueType.string,
+          value: {
+            value:'',
+              placeholder:'请设置提示语',
+              size: 'small'
+          },
+          valueType: ValueType.object,
           props: {
             required: false,
             enablePrint: true
@@ -57,36 +61,51 @@ export const ValueType = {
           title: '数字输入框',
           name: 'NumberInput',
           icon: 'PencilSharp',
-          value: '',
-          valueType: ValueType.number,
+          value: {},
+          valueType: ValueType.object,
           props: {
-            required: false,
-            enablePrint: true,
+            value:'',
+            defaultValue:0,
+            size: ''
           }
         },
         {
           title: '金额输入框',
           name: 'AmountInput',
           icon: 'WalletOutline',
-          value: '',
-          valueType: ValueType.number,
+          value: {
+            value:'',
+            defaultValue:0,
+            size: '',
+            showChinese:''
+          },
+          valueType: ValueType.object,
           props: {
-            required: false,
-            enablePrint: true,
-            showChinese: true
+           
           }
         },
         {
           title: '单选框',
           name: 'SelectInput',
           icon: 'CheckmarkCircleOutline',
-          value: '',
-          valueType: ValueType.string,
+          value: {
+            value: '',
+            options: [
+              {
+                "name": "Joao",
+                "text": "joao",
+                "id": 1
+              },
+              {
+                "name": "xiao",
+                "text": "xiao",
+                "id": 2
+              }
+            ]
+          },
+          valueType: ValueType.object,
           props: {
-            required: false,
-            enablePrint: true,
-            expanding: false,
-            options: ['选项1', '选项2']
+            
           }
         },
         {

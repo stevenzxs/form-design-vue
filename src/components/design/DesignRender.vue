@@ -1,10 +1,5 @@
 <script setup>
 import {ref,markRaw,computed,onMounted,defineEmits} from 'vue'
-// import TextInput from '@/components/form/TextInput.vue'
-// import TextareaInput from '@/components/form/TextareaInput.vue'
-// import AmountInput from  '@/components/form/AmountInput.vue'
-// import NumberInput from  '@/components/form/NumberInput.vue'
-// import SelectInput from '@/components/form/SelectInput.vue'
 
 const props = defineProps({
     mode:{ type: String,default: 'DESIGN' },
@@ -21,21 +16,6 @@ const  form = (call)=>{
 onMounted(() => {
     console.log(formRef.value);
 });
-
-// const FormComponent = ref(null)
-// let nameToComponent = (name)=>{
-//     const lookup = {
-//         "TextInput":TextInput,
-//         "TextareaInput":TextareaInput,
-//         "AmountInput": AmountInput,
-//         "NumberInput": NumberInput,
-//         "SelectInput": SelectInput
-//     }
-//     if( lookup[name] != undefined ){
-//         FormComponent.value = markRaw(lookup[name])
-//     }
-// }
-// nameToComponent(props.config.name);
 
 </script>
 
